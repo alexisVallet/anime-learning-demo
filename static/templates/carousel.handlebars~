@@ -1,0 +1,30 @@
+<div class="carousel slide">
+  <div class="carousel-inner" role="listbox">
+    {{#each test_images}}
+    {{#if @first}}
+    <div class="item active">
+    {{else}}
+    <div class="item">
+    {{/if}}
+      <div class="thumbail">
+	<div class="row">
+	  <div class="col-md-6">
+	    <img src={{image}}>
+	  </div>
+	  <div class="col-md-6">
+	    <div class="caption">
+	      {{#predictions}}
+	      <div class="progress" title={{name}}>
+		<div class="progress-bar" role="progressbar" style="width: {{confidence}}%" >
+		  {{name}}
+		</div>
+	      </div>
+	      {{/predictions}}
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>

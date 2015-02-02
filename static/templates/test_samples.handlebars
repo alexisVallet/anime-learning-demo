@@ -1,0 +1,14 @@
+{{#each test_images}}
+<div class="thumbnail">
+  <img data-src={{image}} class="owl-lazy">
+  <div class="caption">
+    {{#predictions}}
+    <div class="progress" title={{name}}>
+      <div class="progress-bar" role="progressbar" style="width: {{confidence}}%">
+	{{name}}
+      </div>
+    </div>
+    {{/predictions}}
+  </div>
+</div>
+{{/each}}

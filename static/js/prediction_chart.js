@@ -1,0 +1,18 @@
+/**
+ * Creates a thumbnail for the predictions on a given image.
+ * container: the dom element to which the thumbnail will be added.
+ * image: either an URL for the image file, or a base64-encoded image.
+ */
+$(function () {
+    var carousel_template = Handlebars.templates['test_samples'];
+
+    $("#test-samples").html(carousel_template({
+	"test_images": test_predictions
+    }));
+    $("#test-samples").owlCarousel({
+	items: 2,
+	lazyLoad: true,
+	loop: true,
+	nav: true
+    });
+});
