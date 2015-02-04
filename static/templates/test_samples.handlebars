@@ -1,6 +1,9 @@
+<div class="container">
+<div class="row" id="cascading-grid">
 {{#each test_images}}
+<div class="col-sm-3 item">
 <div class="thumbnail">
-  <img data-src={{image}} class="owl-lazy">
+  <img src={{image}} class="img-responsive">
   <div class="caption">
     {{#predictions}}
     <div class="progress" title={{name}}>
@@ -11,4 +14,7 @@
     {{/predictions}}
   </div>
 </div>
+</div>
 {{/each}}
+</div>
+</div>
