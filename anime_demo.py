@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, request, render_template, jsonify, abort
 from subprocess import call
 import cPickle as pickle
 import numpy as np
@@ -23,8 +23,21 @@ def identify(image):
         image
             image to recognize characters from.
     """
+    # Resize the image.
+    rows, cols = image.shape[0:2]
+    n_rows, n_cols = (None, None)
+    min_dim = 256
+    max_nb_pred = 5
+    
+    if rows > cols:
+        n_rows = int(round(min_dim * float(rows) / cols))
+        n_cols = min_dim
+    else:
+        n_cols = int(round(min_dim * float(cols) / rows))
+        n_rows = min_dim
+    img_resized = cv2.resize(image, (n_cols, n_rows), interpolation=cv2.INTER_AREA)
     labels = model.predict_labels_named(
-        ListDataset([image], [frozenset([])]),
+        ListDataset([img_resized], [frozenset([])]),
         batch_size=1,
         method='thresh',
         confidence=True
@@ -38,7 +51,7 @@ def identify(image):
             'confidence': conf / max_conf * 100
         })
         
-    return sorted(conf_dict, key=lambda p: p['confidence'], reverse=True)
+    return sorted(conf_dict, key=lambda p: p['confidence'], reverse=True)[0:max_nb_pred]
 
 def test_predict():
     """ Runs prediction on the test set.
@@ -67,6 +80,20 @@ def anime_recognizer():
     displayed_predictions = [test_predictions[i] for i in randidx[0:16]]
 
     return render_template('anime_recognizer.html', test_predictions=displayed_predictions)
+
+@app.route('/identify_upload', methods=['POST'])
+def identify_handler():
+    if request.method == 'POST':
+        # Get the uploaded image.
+        img_file = request.files['file']
+        img_raw = np.fromstring(img_file.stream.read(), dtype=np.uint8)
+        image = cv2.imdecode(img_raw, 1)
+        if image is None:
+            abort(400)
+        # If all went well, feed it to the model for identification.
+        results = identify(image)
+        
+        return jsonify({'results': results})
 
 if __name__ == "__main__":
     app.run(debug=True)

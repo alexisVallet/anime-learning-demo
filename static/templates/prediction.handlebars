@@ -1,0 +1,14 @@
+<div class="col-sm-3 item">
+<div class="thumbnail">
+  <img src={{image}} class="img-responsive">
+  <div class="caption">
+    {{#predictions}}
+    <div class="progress" title={{name}}>
+      <div class="progress-bar" role="progressbar" style="width: {{confidence}}%">
+	{{name}}
+      </div>
+    </div>
+    {{/predictions}}
+  </div>
+</div>
+</div>
