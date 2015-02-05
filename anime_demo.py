@@ -1,4 +1,6 @@
-from flask import Flask, request, render_template, jsonify, abort
+# -*- coding: utf-8 -*-
+from flask import Flask, g, request, render_template, jsonify, abort
+from flask.ext.babel import Babel, gettext
 from subprocess import call
 import cPickle as pickle
 import numpy as np
@@ -8,6 +10,8 @@ import cv2
 
 from cnn_anime.dataset import ListDataset
 
+""" Setup priori to launching the app. Prepares the prediction model, etc.
+"""
 # Load the prediction model.
 def load_model():
     cnn = None
@@ -73,6 +77,17 @@ def test_predict():
 test_predictions = test_predict()
 
 app = Flask(__name__)
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    # The user can select a locale in the navbar, which we store here.
+    selected_locale = getattr(g, 'locale', None)
+    if selected_locale is None:
+        return selected_locale
+    else:
+        # Otherwise, smart guess between English and Japanese.
+        return request.accept_languages.best_match(['en', 'ja'])
 
 @app.route('/')
 def anime_recognizer():
