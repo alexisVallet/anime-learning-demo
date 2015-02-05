@@ -7,7 +7,7 @@ $(function () {
     $("#test-samples").html(test_template({
 	"test_images": test_predictions
     }));
-    $("#test-samples-grid").imagesLoaded(function(){
+    $("#test-samples-grid").waitForImages().done(function(){
 	$("#test-samples-grid").masonry({
 	    itemSelector: '.item'
 	});
@@ -34,16 +34,20 @@ $(function () {
 		processData: false,
 		contentType: false,
 		success: function(pred) {
-		    console.log(pred);
 		    // Pass the prediction results and raw image data to the thumbnail template.
 		    var pred_html = jQuery(pred_template({
 			image: fr.result,
 			predictions: pred.results
 		    }));
+		    pred_html.hide();
 		    $("#uploaded-samples-grid")
-			.append(pred_html)
-		        .masonry('appended', pred_html, true)
-		        .masonry('layout');
+			.append(pred_html);
+		    pred_html.waitForImages().done(function(){
+			pred_html.show();
+			$("#uploaded-samples-grid")
+			    .masonry('appended', pred_html, true)
+			    .masonry('layout');
+		    });
 		}
 	    });
 	}
