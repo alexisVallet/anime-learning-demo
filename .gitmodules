@@ -1,3 +1,6 @@
 [submodule "cnn-anime"]
 	path = cnn_anime
 	url = git@github.com:alexisVallet/cnn-anime.git
+[submodule "cc-anime-images"]
+	path = cc-anime-images
+	url = git@github.com:alexisVallet/cc-anime-images.git

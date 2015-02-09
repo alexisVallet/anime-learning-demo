@@ -1,14 +1,26 @@
 <div class="col-sm-3 item">
 <div class="thumbnail">
-  <img src={{image}} class="img-responsive">
+  {{#if illust_info}}
+  <a href="{{#with illust_info}}{{url}}{{/with}}">
+  <img src="{{image}}" class="img-responsive"
+  {{#with illust_info}}title="'{{title}}' by {{author}}"{{/with}}>
+  </a>
+  {{else}}
+  <img src="{{image}}" class="img-responsive">
+  {{/if}}
   <div class="caption">
     {{#predictions}}
-    <div class="progress" title={{name}}>
+    <div class="progress" title="{{name}}">
       <div class="progress-bar" role="progressbar" style="width: {{confidence}}%">
 	{{name}}
       </div>
     </div>
     {{/predictions}}
+    {{#if illust_info}}
+    {{#with illust_info}}
+    <small><a href="{{url}}">'{{title}}'</a> by <a href="http://{{author}}.deviantart.com">{{author}}</a> is licensed under <a href="{{license-url}}">{{license-name}}</a>.</small>
+    {{/with}}
+    {{/if}}
   </div>
 </div>
 </div>

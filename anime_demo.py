@@ -7,8 +7,10 @@ import numpy as np
 import os
 import os.path
 import cv2
+import json
 
 from cnn_anime.dataset import ListDataset
+from label_translate import label_to_english
 
 """ Setup priori to launching the app. Prepares the prediction model, etc.
 """
@@ -51,7 +53,7 @@ def identify(image):
 
     for label, conf in labels[0]:
         conf_dict.append({
-            'name': label,
+            'name': label_to_english[label],
             'confidence': conf / max_conf * 100
         })
         
@@ -62,14 +64,42 @@ def test_predict():
     """
     print "Running prediction on the test set..."
     image_dir = 'static/images/test_set'
+    json_dir = 'cc-anime-images/info'
     img_fnames = [f for f in os.listdir(image_dir) if f.endswith('.jpg')]
     predictions = []
+    license_names = {
+        'cc-3.0': "CC BY 3.0",
+        'cc-sa-3.0': "CC BY-SA 3.0",
+        'cc-nd-3.0': "CC BY-ND 3.0",
+        'cc-nc-3.0': "CC BY-NC 3.0",
+        'cc-nc-sa-3.0': "CC BY-NC-SA 3.0",
+        'cc-nc-nd-3.0': "CC BY-NC-ND 3.0"
+    }
+    license_urls = {
+        'cc-3.0': "http://creativecommons.org/licenses/by/3.0/",
+        'cc-sa-3.0': "http://creativecommons.org/licenses/by-sa/3.0/",
+        'cc-nd-3.0': "http://creativecommons.org/licenses/by-nd/3.0/",
+        'cc-nc-3.0': "http://creativecommons.org/licenses/by-nc/3.0/",
+        'cc-nc-sa-3.0': "http://creativecommons.org/licenses/by-nc-sa/3.0/",
+        'cc-nc-nd-3.0': "http://creativecommons.org/licenses/by-nc-nd/3.0/"
+    }
 
     for img_fname in img_fnames:
         image = cv2.imread(os.path.join(image_dir, img_fname))
+        base_name = os.path.splitext(os.path.basename(img_fname))[0]
+        image_info = None
+        with open(os.path.join(json_dir, base_name + '.json')) as json_file:
+            image_info = json.load(json_file)
         predictions.append({
             "image": os.path.join(image_dir, img_fname),
-            "predictions": identify(image)
+            "predictions": identify(image),
+            "illust_info": None if image_info is None else {
+                "title": image_info["title"],
+                "author": image_info["author"],
+                "url": image_info["url"],
+                "license-name": license_names[image_info["license_type"]],
+                "license-url": license_urls[image_info["license_type"]]
+            }
         })
     print "Prediction done!"
     return predictions

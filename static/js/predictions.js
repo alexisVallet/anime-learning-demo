@@ -2,7 +2,7 @@ $(function () {
     // Display the random test samples.
     var pred_template = Handlebars.templates['prediction']
     var test_template = Handlebars.templates['test_samples'];
-    Handlebars.registerPartial('prediction', pred_template)
+    Handlebars.registerPartial('prediction', pred_template);
 
     $("#test-samples").html(test_template({
 	"test_images": test_predictions
