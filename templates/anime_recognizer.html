@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Anime character recognizer</title>
+    <title>{{page_title|safe}}</title>
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
@@ -24,23 +24,30 @@
     <div class="navbar navbar-default">
       <div class="container-fluid">
 	<div class="nav navbar-nav navbar-right">
-	  <li><a href="#about">About</a></li>
-	  <li><a href="#acknowledgements">Acknowledgements</a></li>
+	  <li><a href="#about">{{about_navbar|safe}}</a></li>
+	  <li><a href="#acknowledgements">{{acknowledgements_navbar|safe}}</a></li>
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{language_select|safe}}<span class="caret"></span></a>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><a href="?locale=en">English</a></li>
+	      <li><a href="?locale=ja">日本語</a></li>
+	    </ul>
+	  </li>
 	</div>
       </div>
     </div>
 
     <div class="container">
       <div class="jumbotron">
-	<h1>Anime character recognizer</h1>
+	<h1>{{jumbotron_title|safe}}</h1>
 	<p>
-	  Demo of my research on anime character recognition. Currently, can identify up to 115 different characters among the most popular from <a href="www.pixiv.net">Pixiv</a>. Uses deep learning under the hood to provide amazing accuracy.
+	  {{jumbotron_body|safe}}
 	</p>
       </div>
 
-      <h1>Try it now!</h1>
+      <h1>{{try_it_now_header|safe}}</h1>
       <div class="form-group">
-	<label for="file-upload">Upload your own images</label>
+	<label for="file-upload">{{upload_label|safe}}</label>
 	<input type="file" id="file-upload">
       </div>
 
@@ -48,27 +55,17 @@
 	<div class="row" id="uploaded-samples-grid"></div>
       </div>
 
-      <h1>Samples gallery</h1>
+      <h1>{{gallery_header|safe}}</h1>
       <p>
-	Images from Pixiv, with the characters recognized in them. The length of the bar indicates the confidence of the prediction. Click on the image to see the artist's Pixiv page.
+	{{gallery_preamble|safe}}
       </p>
       <div id="test-samples"></div>
 
-      <h1 id="about">About</h1>
-      <p>
-	My name is Alexis Vallet. I'm a Ph.D. student at Kyushu University, Japan. I do computer vision research, focusing on deep learning for artwork annotation. You can check out my work on <a href="https://github.com/alexisVallet">Github</a> or on my <a href="http://alexisvallet.github.io/">blog</a>.
-      </p>
-      <p>
-	Like what I do? I am currently looking for companies to collaborate with. You can contact me <a href="mailto:alexis.vallet@gmail.com">here</a>.
-      </p>
+      <h1 id="about">{{about_header|safe}}</h1>
+      {{about_body|safe}}
 
-      <h1 id="acknowledgements">Acknowledgements</h1>
-      <p>
-	This research wouldn't have been possible without support from Kyushu University, my family and my thesis advisor Hiroyasu Sakamoto.
-      </p>
-      <p>
-	Illustrations on this website are all licensed under some creative commons license, see the attribution details on each thumbnail. I do not profit from this website in any fashion, and only modified the original images to resize them to thumbnail size and convert them to the jpeg format. If your illustration was misattributed, please contact me <a href="mailto:alexis.vallet@gmail.com">here</a>.
-      </p>
+      <h1 id="acknowledgements">{{acknowledgements_header|safe}}</h1>
+      {{acknowledgements_body|safe}}
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, g, request, render_template, jsonify, abort
-from flask.ext.babel import Babel, gettext
+from flask import Flask, g, session, request, render_template, jsonify, abort
+from flask.ext.babel import Babel, get_locale
 from subprocess import call
 import cPickle as pickle
 import numpy as np
@@ -8,9 +8,13 @@ import os
 import os.path
 import cv2
 import json
+import copy
 
 from cnn_anime.dataset import ListDataset
-from label_translate import label_to_english
+from label_translate import label_to_english, label_to_japanese
+from messages_en import messages_en
+from messages_ja import messages_ja
+from secret_key import secret_key
 
 """ Setup priori to launching the app. Prepares the prediction model, etc.
 """
@@ -51,9 +55,10 @@ def identify(image):
     conf_dict = []
     max_conf = np.max(map(lambda l: l[1], labels[0]))
 
+    # Translate according the locale.
     for label, conf in labels[0]:
         conf_dict.append({
-            'name': label_to_english[label],
+            'name': label,
             'confidence': conf / max_conf * 100
         })
         
@@ -111,20 +116,29 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
-    # The user can select a locale in the navbar, which we store here.
-    selected_locale = getattr(g, 'locale', None)
-    if selected_locale is None:
-        return selected_locale
-    else:
-        # Otherwise, smart guess between English and Japanese.
-        return request.accept_languages.best_match(['en', 'ja'])
+    return request.accept_languages.best_match(['en', 'ja'])
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def anime_recognizer():
+    new_locale = request.args.get('locale', None)
+    if new_locale is not None:
+        session['locale'] = new_locale
+    elif 'locale' not in session:
+        session['locale'] = request.accept_languages.best_match(['en', 'ja'])
     randidx = np.random.permutation(len(test_predictions))
-    displayed_predictions = [test_predictions[i] for i in randidx[0:16]]
+    displayed_predictions = copy.deepcopy([test_predictions[i] for i in randidx[0:16]])
+    # Localizing label names
+    label_tr = label_to_japanese if session['locale'] == 'ja' else label_to_english
+    
+    for img in displayed_predictions:
+        for pred in img['predictions']:
+            pred['name'] = label_tr[pred['name']]
 
-    return render_template('anime_recognizer.html', test_predictions=displayed_predictions)
+    return render_template(
+        'anime_recognizer.html',
+        test_predictions=displayed_predictions,
+        **(messages_ja if session['locale'] == 'ja' else messages_en)
+    )
 
 @app.route('/identify_upload', methods=['POST'])
 def identify_handler():
@@ -137,8 +151,13 @@ def identify_handler():
             abort(400)
         # If all went well, feed it to the model for identification.
         results = identify(image)
+        label_tr = label_to_japanese if session['locale'] == 'ja' else label_to_english
+        for pred in results:
+            pred['name'] = label_tr[pred['name']]
         
         return jsonify({'results': results})
+
+app.secret_key = secret_key
 
 if __name__ == "__main__":
     app.run(debug=True)
