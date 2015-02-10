@@ -127,7 +127,7 @@ def anime_recognizer():
         session['locale'] = request.accept_languages.best_match(['en', 'ja'])
     randidx = np.random.permutation(len(test_predictions))
     displayed_predictions = copy.deepcopy([test_predictions[i] for i in randidx[0:16]])
-    # Localizing label names
+    # Localizing label names.
     label_tr = label_to_japanese if session['locale'] == 'ja' else label_to_english
     
     for img in displayed_predictions:
