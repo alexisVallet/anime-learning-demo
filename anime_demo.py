@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, g, session, request, render_template, jsonify, abort
 from flask.ext.babel import Babel, get_locale
-from subprocess import call
+import numpy as np
 import cPickle as pickle
 import numpy as np
 import os
 import os.path
-import cv2
 import json
 import copy
+from skimage.transform import resize
+from skimage.io import imread, imshow
+import PIL
+import StringIO
 
 from cnn_anime.dataset import ListDataset
 from label_translate import label_to_english, label_to_japanese
@@ -18,21 +21,27 @@ from secret_key import secret_key
 
 """ Setup priori to launching the app. Prepares the prediction model, etc.
 """
+
 # Load the prediction model.
+model = None
+test_predictions = None
+
 def load_model():
     cnn = None
     with open('models/gap19_spp_thresh.pkl', 'rb') as cnn_file:
         cnn = pickle.load(cnn_file)
     return cnn
-model = load_model()
 
 def identify(image):
     """ Identifies the anime characters in an image.
 
     Arguments:
         image
-            image to recognize characters from.
+            image to recognize characters from. Should be in (row, cols, channels) shape,
+            BGR format, 8-bit depth.
     """
+    assert image.dtype == np.uint8
+    assert image.shape[2] == 3
     # Resize the image.
     rows, cols = image.shape[0:2]
     n_rows, n_cols = (None, None)
@@ -45,7 +54,8 @@ def identify(image):
     else:
         n_cols = int(round(min_dim * float(cols) / rows))
         n_rows = min_dim
-    img_resized = cv2.resize(image, (n_cols, n_rows), interpolation=cv2.INTER_AREA)
+    img_resized = (resize(image, (n_rows, n_cols)) * 255).astype(np.uint8)
+    print (img_resized.dtype, img_resized.shape, img_resized.min(), img_resized.max(), img_resized.mean())
     labels = model.predict_labels_named(
         ListDataset([img_resized], [frozenset([])]),
         batch_size=1,
@@ -90,14 +100,17 @@ def test_predict():
     }
 
     for img_fname in img_fnames:
-        image = cv2.imread(os.path.join(image_dir, img_fname))
+        image = imread(os.path.join(image_dir, img_fname))
+        image_bgr = np.array(image, copy=True)
+        image_bgr[:,:,0] = image[:,:,2]
+        image_bgr[:,:,2] = image[:,:,1]
         base_name = os.path.splitext(os.path.basename(img_fname))[0]
         image_info = None
         with open(os.path.join(json_dir, base_name + '.json')) as json_file:
             image_info = json.load(json_file)
         predictions.append({
             "image": os.path.join(image_dir, img_fname),
-            "predictions": identify(image),
+            "predictions": identify(image_bgr),
             "illust_info": None if image_info is None else {
                 "title": image_info["title"],
                 "author": image_info["author"],
@@ -109,7 +122,16 @@ def test_predict():
     print "Prediction done!"
     return predictions
 
-test_predictions = test_predict()
+def init_everything():
+    global test_predictions
+    global model
+    model = load_model()
+    test_predictions = test_predict()
+
+if os.environ.get('WERKZEUG_RUN_MAIN'):
+    # Werkzeug sets this environment variable for the actual server process. So we only
+    # run the initialization code in that case.
+    init_everything()
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -145,9 +167,14 @@ def identify_handler():
     if request.method == 'POST':
         # Get the uploaded image.
         img_file = request.files['file']
-        img_raw = np.fromstring(img_file.stream.read(), dtype=np.uint8)
-        image = cv2.imdecode(img_raw, 1)
-        if image is None:
+        print "to stringio"
+        img_stringio = StringIO.StringIO(img_file.stream.read())
+        print "to PIL"
+        image_pil = PIL.Image.open(img_stringio, mode='r')
+        print "to numpy"
+        print image_pil.shape
+        image = np.asarray(image_pil, dtype=np.uint8)
+        if image is None or image.shape[2] > 3 or image.shape[0] > 1024 or image.shape[1] > 1024:
             abort(400)
         # If all went well, feed it to the model for identification.
         results = identify(image)

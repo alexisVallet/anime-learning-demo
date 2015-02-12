@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Anime character recognizer</title>
+    <title>{{page_title|safe}}</title>
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
@@ -21,25 +21,51 @@
     <![endif]-->
   </head>
   <body>
+    <div class="navbar navbar-default">
+      <div class="container-fluid">
+	<div class="nav navbar-nav navbar-right">
+	  <li><a href="#about">{{about_navbar|safe}}</a></li>
+	  <li><a href="#acknowledgements">{{acknowledgements_navbar|safe}}</a></li>
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{language_select|safe}}<span class="caret"></span></a>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><a href="locale=en">English</a></li>
+	      <li><a href="locale=ja"></a></li>
+	    </ul>
+	  </li>
+	</div>
+      </div>
+    </div>
+
     <div class="container">
       <div class="jumbotron">
-	<h1>Anime character recognizer</h1>
+	<h1>{{jumbotron_title|safe}}</h1>
 	<p>
-	  Demo of my research on anime character recognition. Currently, can identify up to 115 different characters among the most popular from <a href="www.pixiv.net">Pixiv</a>. Uses deep learning under the hood to provide amazing accuracy.
+	  {{jumbotron_body|safe}}
 	</p>
       </div>
 
-      <h1>Try it now!</h1>
-      <form class="form-inline">
-	<div class="form-group">
-	  <label for="file-upload">Upload your own image</label>
-	  <input type="file" id="file-upload">
-	</div>
-      </form>
+      <h1>{{try_it_now_header|safe}}</h1>
+      <div class="form-group">
+	<label for="file-upload">{{upload_label|safe}}</label>
+	<input type="file" id="file-upload">
+      </div>
 
-      <h1>Samples gallery</h1>
-      <div class="container-fluid" id="test-samples"></div>
+      <div class="container">
+	<div class="row" id="uploaded-samples-grid"></div>
+      </div>
 
+      <h1>{{gallery_header|safe}}</h1>
+      <p>
+	{{gallery_preamble|safe}}
+      </p>
+      <div id="test-samples"></div>
+
+      <h1 id="about">{{about_header|safe}}</h1>
+      {{about_body|safe}}
+
+      <h1 id="acknowledgements">{{acknowledgements_header|safe}}</h1>
+      {{acknowledgements_body|safe}}
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -49,13 +75,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!-- Handlebars for rendering thumbnails predictions -->
     <script src="static/js/handlebars.runtime-v2.0.0.js"></script>
-    <!-- Template for thumbnails -->
+    <!-- Masonry for cascading grid layout of thumbnails -->
+    <script src="static/js/masonry.pkgd.min.js"></script>
+    <!-- waitForImages to deal with images using Masonry, even Ajax added ones -->
+    <script src="static/js/jquery.waitforimages.min.js"></script>
+    <!-- Templates -->
     <script src="static/js/templates.js"></script>
     <!-- Predictions for test data (generated server-side) -->
     <script>
       var test_predictions = {{ test_predictions|tojson|safe }};
     </script>
-    <!-- Charts code for predictions -->
-    <script src="static/js/prediction_chart.js"></script>
+    <!-- Code for predictions -->
+    <script src="static/js/predictions.js"></script>
   </body>
 </html>
