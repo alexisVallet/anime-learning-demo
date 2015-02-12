@@ -32,16 +32,19 @@ def load_model():
         cnn = pickle.load(cnn_file)
     return cnn
 
-def identify(image):
+def identify(image_raw):
     """ Identifies the anime characters in an image.
 
     Arguments:
         image
             image to recognize characters from. Should be in (row, cols, channels) shape,
-            BGR format, 8-bit depth.
+            RGB(A) format, 8-bit depth.
     """
-    assert image.dtype == np.uint8
-    assert image.shape[2] == 3
+    assert image_raw.dtype == np.uint8
+    assert image_raw.shape[2] >= 3
+    image = np.array(image_raw[:,:,0:3], copy=True)
+    image[:,:,0] = image_raw[:,:,2]
+    image[:,:,2] = image_raw[:,:,0]
     # Resize the image.
     rows, cols = image.shape[0:2]
     n_rows, n_cols = (None, None)
@@ -55,7 +58,6 @@ def identify(image):
         n_cols = int(round(min_dim * float(cols) / rows))
         n_rows = min_dim
     img_resized = (resize(image, (n_rows, n_cols)) * 255).astype(np.uint8)
-    print (img_resized.dtype, img_resized.shape, img_resized.min(), img_resized.max(), img_resized.mean())
     labels = model.predict_labels_named(
         ListDataset([img_resized], [frozenset([])]),
         batch_size=1,
@@ -101,16 +103,13 @@ def test_predict():
 
     for img_fname in img_fnames:
         image = imread(os.path.join(image_dir, img_fname))
-        image_bgr = np.array(image, copy=True)
-        image_bgr[:,:,0] = image[:,:,2]
-        image_bgr[:,:,2] = image[:,:,1]
         base_name = os.path.splitext(os.path.basename(img_fname))[0]
         image_info = None
         with open(os.path.join(json_dir, base_name + '.json')) as json_file:
             image_info = json.load(json_file)
         predictions.append({
             "image": os.path.join(image_dir, img_fname),
-            "predictions": identify(image_bgr),
+            "predictions": identify(image),
             "illust_info": None if image_info is None else {
                 "title": image_info["title"],
                 "author": image_info["author"],
@@ -167,14 +166,10 @@ def identify_handler():
     if request.method == 'POST':
         # Get the uploaded image.
         img_file = request.files['file']
-        print "to stringio"
         img_stringio = StringIO.StringIO(img_file.stream.read())
-        print "to PIL"
-        image_pil = PIL.Image.open(img_stringio, mode='r')
-        print "to numpy"
-        print image_pil.shape
-        image = np.asarray(image_pil, dtype=np.uint8)
-        if image is None or image.shape[2] > 3 or image.shape[0] > 1024 or image.shape[1] > 1024:
+        image = imread(img_stringio)
+                
+        if image is None or image.shape[2] not in [3,4] or image.shape[0] > 4096 or image.shape[1] > 4096:
             abort(400)
         # If all went well, feed it to the model for identification.
         results = identify(image)
