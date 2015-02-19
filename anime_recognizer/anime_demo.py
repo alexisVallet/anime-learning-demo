@@ -12,25 +12,27 @@ from skimage.transform import resize
 from skimage.io import imread, imshow
 import PIL
 import StringIO
+import multiprocessing as mp
+import zmq
 
-from cnn_anime.dataset import ListDataset
 from label_translate import label_to_english, label_to_japanese
 from messages_en import messages_en
 from messages_ja import messages_ja
 from secret_key import secret_key
+from ident_server import ident_server
 
-""" Setup priori to launching the app. Prepares the prediction model, etc.
-"""
-
-# Load the prediction model.
-model = None
+# 0MQ request object for identification, and test predictions.
+req = None
 test_predictions = None
 
-def load_model():
-    cnn = None
-    with open('models/gap19_spp_thresh.pkl', 'rb') as cnn_file:
-        cnn = pickle.load(cnn_file)
-    return cnn
+def send_array(socket, A, flags=0, copy=True, track=False):
+    """send a numpy array with metadata"""
+    md = dict(
+        dtype = str(A.dtype),
+        shape = A.shape,
+    )
+    socket.send_json(md, flags|zmq.SNDMORE)
+    return socket.send(A, flags, copy=copy, track=track)
 
 def identify(image_raw):
     """ Identifies the anime characters in an image.
@@ -40,6 +42,7 @@ def identify(image_raw):
             image to recognize characters from. Should be in (row, cols, channels) shape,
             RGB(A) format, 8-bit depth.
     """
+    global req
     assert image_raw.dtype == np.uint8
     assert image_raw.shape[2] >= 3
     image = np.array(image_raw[:,:,0:3], copy=True)
@@ -58,12 +61,9 @@ def identify(image_raw):
         n_cols = int(round(min_dim * float(cols) / rows))
         n_rows = min_dim
     img_resized = (resize(image, (n_rows, n_cols)) * 255).astype(np.uint8)
-    labels = model.predict_labels_named(
-        ListDataset([img_resized], [frozenset([])]),
-        batch_size=1,
-        method='thresh',
-        confidence=True
-    )
+    # Calls the identification server for actual identification.
+    send_array(req, img_resized)
+    labels = req.recv_pyobj()
     conf_dict = []
     max_conf = np.max(map(lambda l: l[1], labels[0]))
 
@@ -123,8 +123,16 @@ def test_predict():
 
 def init_everything():
     global test_predictions
-    global model
-    model = load_model()
+    global req
+    # Launches the identification server in a separate process.
+    sock_name = "ipc:///tmp/ident_sock"
+    ident_proc = mp.Process(target=ident_server, args=(sock_name,))
+    ident_proc.start()
+    
+    # Set up the client-side communication stuff.
+    ctx = zmq.Context.instance()
+    req = ctx.socket(zmq.REQ)
+    req.connect(sock_name)
     test_predictions = test_predict()
 
 init_everything()
@@ -179,4 +187,4 @@ def identify_handler():
 app.secret_key = secret_key
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', debug=True, port=5000, use_reloader=False)
