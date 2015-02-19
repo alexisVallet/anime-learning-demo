@@ -14,5 +14,6 @@ setup(
     ],
     dependency_links=[
         'git+ssh://git@github.com/alexisvallet/cnn-anime.git#egg=cnn_anime'
-    ]
+    ],
+    include_package_data=True
 )

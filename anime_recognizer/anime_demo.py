@@ -127,10 +127,7 @@ def init_everything():
     model = load_model()
     test_predictions = test_predict()
 
-if os.environ.get('WERKZEUG_RUN_MAIN'):
-    # Werkzeug sets this environment variable for the actual server process. So we only
-    # run the initialization code in that case.
-    init_everything()
+init_everything()
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -182,4 +179,4 @@ def identify_handler():
 app.secret_key = secret_key
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
