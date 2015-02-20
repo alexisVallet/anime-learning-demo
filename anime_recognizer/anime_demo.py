@@ -178,7 +178,7 @@ def identify_handler():
             abort(400)
         # If all went well, feed it to the model for identification.
         results = identify(image)
-        label_tr = label_to_japanese if session['locale'] == 'ja' else label_to_english
+        label_tr = label_to_japanese if session.get('locale', None) == 'ja'  else label_to_english
         for pred in results:
             pred['name'] = label_tr[pred['name']]
         

@@ -13,6 +13,10 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
+    <!-- Font-awesome -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -46,9 +50,12 @@
       </div>
 
       <h1>{{try_it_now_header|safe}}</h1>
-      <div class="form-group">
-	<label for="file-upload">{{upload_label|safe}}</label>
-	<input type="file" id="file-upload">
+      <div class="form-inline">
+	<div class="form-group">
+	  <label for="file-upload">{{upload_label|safe}}</label>
+	  <input type="file" id="file-upload">
+	</div>
+	<i class="fa fa-spinner fa-spin hidden" id="upload-spinner"></i>
       </div>
 
       <div class="container">

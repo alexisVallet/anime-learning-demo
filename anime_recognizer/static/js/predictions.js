@@ -19,6 +19,11 @@ $(function () {
     // File upload.
     $("#file-upload").change(function(){
 	var file_data = $("#file-upload").prop('files')[0];
+	// Abort if no file was specified.
+	if (!file_data) {
+	    return;
+	}
+	$("#upload-spinner").removeClass("hidden");
 	// Read the raw data client-side to display without uploading.
 	var fr = new FileReader();
 	fr.onloadend = function () {
@@ -48,9 +53,10 @@ $(function () {
 			    .masonry('appended', pred_html, true)
 			    .masonry('layout');
 		    });
+		    $("#upload-spinner").addClass("hidden");
 		}
 	    });
 	}
-	fr.readAsDataURL(file_data)	
+	fr.readAsDataURL(file_data);
     });
 });

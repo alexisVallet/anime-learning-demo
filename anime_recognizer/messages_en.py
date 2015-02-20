@@ -9,6 +9,8 @@ messages_en = {
     'jumbotron_body': 'Demo of my research on anime character recognition. Currently, can identify up to 115 different characters among the most popular from <a href="www.pixiv.net">Pixiv</a>. Uses deep learning under the hood to provide amazing accuracy.',
     'try_it_now_header': 'Try it now!',
     'upload_label': 'Upload your own images:',
+    'recognize_button_load': 'Recognizing...',
+    'recognize_button': 'Recognize',
     'gallery_header':  'Samples gallery',
     'gallery_preamble': 'Images from <a href="http://www.deviantart.com">deviantART</a>, with the characters recognized in them. The length of the bar indicates the confidence of the prediction.',
     'about_header': 'About',
