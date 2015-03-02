@@ -10,7 +10,8 @@ setup(
         'scikit-image',
         'cnn_anime',
         'Flask',
-        'flask-babel'
+        'flask-babel',
+        'pyzmq'
     ],
     dependency_links=[
         'git+ssh://git@github.com/alexisvallet/cnn-anime.git#egg=cnn_anime'
