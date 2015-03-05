@@ -5,7 +5,7 @@ messages_ja = {
     'page_title': u"アニメキャラクター認識",
     'characters_navbar': u"キャラクター",
     'about_navbar': u"私について",
-    'acknowledgements_navbar': u"礼状",
+    'acknowledgements_navbar': u"謝意",
     'language_select': u"言語",
     'jumbotron_title': u"アニメキャラクター認識",
     'jumbotron_body': u'このアプリで私の自動的アニメキャラクター認識研究を紹介します。現在、ディープラーニングを使って、高い制度で<a href="http://www.pixiv.net">ピクシブ</a>の<a href="#characters">一番人気な115人キャラクター</a>を認識出来ます。',
@@ -23,7 +23,7 @@ messages_ja = {
     <p>
     現在会社と協力したいと考えています。私の研究に興味があったら、<a href="mailto:alexis.vallet@gmail.com">メール</a>で連絡してください。
     </p>""",
-    'acknowledgements_header': u"礼状",
+    'acknowledgements_header': u"謝意",
     'acknowledgements_body': u"""<p>
     九州大学と私の家族と坂本先生のおかげでこの研究が出来ました。
     </p>
