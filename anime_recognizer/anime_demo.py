@@ -20,6 +20,7 @@ from messages_en import messages_en
 from messages_ja import messages_ja
 from secret_key import secret_key
 from ident_server import ident_server
+from series import translated_chars
 
 # 0MQ request object for identification, and test predictions.
 req = None
@@ -159,9 +160,13 @@ def anime_recognizer():
     for img in displayed_predictions:
         for pred in img['predictions']:
             pred['name'] = label_tr[pred['name']]
+    # Localizing characters.
+    chars = translated_chars('ja' if session['locale'] == 'ja' 
+                             else 'en')
 
     return render_template(
         'anime_recognizer.html',
+        characters=chars,
         test_predictions=displayed_predictions,
         **(messages_ja if session['locale'] == 'ja' else messages_en)
     )

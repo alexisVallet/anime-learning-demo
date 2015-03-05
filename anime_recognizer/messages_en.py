@@ -2,17 +2,19 @@
 """
 messages_en = {
     'page_title': 'Anime character recognizer',
+    'characters_navbar': 'Characters',
     'about_navbar': 'About',
     'acknowledgements_navbar': 'Acknowledgements',
     'language_select': 'Language',
     'jumbotron_title': 'Anime character recognizer',
-    'jumbotron_body': 'Demo of my research on anime character recognition. Currently, can identify up to 115 different characters among the most popular from <a href="www.pixiv.net">Pixiv</a>. Uses deep learning under the hood to provide amazing accuracy.',
+    'jumbotron_body': 'Demo of my research on anime character recognition. Currently, can identify up to <a href="#characters">115 different characters</a> among the most popular from <a href="www.pixiv.net">Pixiv</a>. Uses deep learning under the hood to provide amazing accuracy.',
     'try_it_now_header': 'Try it now!',
     'upload_label': 'Upload your own images:',
     'recognize_button_load': 'Recognizing...',
     'recognize_button': 'Recognize',
     'gallery_header':  'Samples gallery',
     'gallery_preamble': 'Images from <a href="http://www.deviantart.com">deviantART</a>, with the characters recognized in them. The length of the bar indicates the confidence of the prediction.',
+    'characters_header': 'Characters',
     'about_header': 'About',
     'about_body': """<p>
 	My name is Alexis Vallet. I'm a Ph.D. student at Kyushu University, Japan. I do computer vision research, focusing on deep learning for artwork annotation. You can check out my work on <a href="https://github.com/alexisVallet">Github</a> or on my <a href="http://alexisvallet.github.io/">blog</a>.

@@ -3,17 +3,19 @@
 """
 messages_ja = {
     'page_title': u"アニメキャラクター認識",
+    'characters_navbar': u"キャラクター",
     'about_navbar': u"私に付いて",
     'acknowledgements_navbar': u"礼状",
     'language_select': u"言語",
     'jumbotron_title': u"アニメキャラクター認識",
-    'jumbotron_body': u'このアプリで私の自動的アニメキャラクター認識研究を紹介します。現在、ディープラーニングを使って、高い制度で<a href="http://www.pixiv.net">ピクシブ</a>の一番人気な115人キャラクターを認識出来ます。',
+    'jumbotron_body': u'このアプリで私の自動的アニメキャラクター認識研究を紹介します。現在、ディープラーニングを使って、高い制度で<a href="http://www.pixiv.net">ピクシブ</a>の<a href="#characters">一番人気な115人キャラクター</a>を認識出来ます。',
     'try_it_now_header': u"やってみたい?",
     'upload_label': u"自分の画像をアップロードする：",
     'recognize_button_load': u'認識中…',
     'recognize_button': u'認識する',
     'gallery_header': u"ギャラリー",
     'gallery_preamble': u"""<a href="http://www.deviantart.com">deviantART</a>の画像と認識出来たキャラクター。""",
+    'characters_header': u"キャラクター",
     'about_header': u"私に付いて",
     'about_body': u"""<p>
     アレクシと申します。フランスから来て、現在九州大学でコンピュータービジョンを研究します。 <a href="https://github.com/alexisVallet">Github</a>と<a href="http://alexisvallet.github.io/">私のブログ</a>で私の研究を見えます。
