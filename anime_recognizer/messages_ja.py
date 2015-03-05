@@ -18,7 +18,7 @@ messages_ja = {
     'characters_header': u"キャラクター",
     'about_header': u"私について",
     'about_body': u"""<p>
-    アレクシと申します。フランスから来て、現在九州大学でコンピュータービジョンを研究しています。 <a href="https://github.com/alexisVallet">Github</a>と<a href="http://alexisvallet.github.io/">私のブログ</a>で私の研究を見えます。
+    アレクシと申します。フランスから来て、現在九州大学でコンピュータービジョンを研究しています。 <a href="https://github.com/alexisVallet">Github</a>と<a href="http://alexisvallet.github.io/">私のブログ</a>で私の研究を見れます。
     </p>
     <p>
     現在会社と協力したいと考えています。私の研究に興味があったら、<a href="mailto:alexis.vallet@gmail.com">メール</a>で連絡してください。
