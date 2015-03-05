@@ -5,7 +5,7 @@ templates['prediction'] = template({"1":function(depth0,helpers,partials,data) {
 
   return "  <a href=\""
     + ((stack1 = helpers['with'].call(depth0,(depth0 != null ? depth0.illust_info : depth0),{"name":"with","hash":{},"fn":this.program(2, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
-    + "\">\n  <img src=\""
+    + "\" target=\"_blank\">\n  <img src=\""
     + this.escapeExpression(((helper = (helper = helpers.image || (depth0 != null ? depth0.image : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"image","hash":{},"data":data}) : helper)))
     + "\" class=\"img-responsive\"\n  "
     + ((stack1 = helpers['with'].call(depth0,(depth0 != null ? depth0.illust_info : depth0),{"name":"with","hash":{},"fn":this.program(4, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")

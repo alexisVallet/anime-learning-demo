@@ -77,7 +77,7 @@
 	<ul class="list-inline">
 	  {% for char in chars|sort %}
 	  <li>
-	    <a href="http://www.google.com/images?q={{char|urlencode}}">
+	    <a href="http://www.google.com/images?q={{series + ' ' + char|urlencode}}" target="_blank">
 	      {{char}}
 	    </a>
 	  </li>
