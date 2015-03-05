@@ -27,7 +27,7 @@ templates['prediction'] = template({"1":function(depth0,helpers,partials,data) {
 
   return "  <img src=\""
     + this.escapeExpression(((helper = (helper = helpers.image || (depth0 != null ? depth0.image : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"image","hash":{},"data":data}) : helper)))
-    + "\" class=\"img-responsive\">\n  <button type=\"button\" class=\"close\">&times;</button>\n";
+    + "\" class=\"img-responsive\">\n";
 },"8":function(depth0,helpers,partials,data) {
     var helper, alias1=helpers.helperMissing, alias2="function", alias3=this.escapeExpression;
 
