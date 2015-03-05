@@ -4,7 +4,7 @@
 messages_ja = {
     'page_title': u"アニメキャラクター認識",
     'characters_navbar': u"キャラクター",
-    'about_navbar': u"私に付いて",
+    'about_navbar': u"私について",
     'acknowledgements_navbar': u"礼状",
     'language_select': u"言語",
     'jumbotron_title': u"アニメキャラクター認識",
@@ -16,16 +16,16 @@ messages_ja = {
     'gallery_header': u"ギャラリー",
     'gallery_preamble': u"""<a href="http://www.deviantart.com">deviantART</a>の画像と認識出来たキャラクター。""",
     'characters_header': u"キャラクター",
-    'about_header': u"私に付いて",
+    'about_header': u"私について",
     'about_body': u"""<p>
-    アレクシと申します。フランスから来て、現在九州大学でコンピュータービジョンを研究します。 <a href="https://github.com/alexisVallet">Github</a>と<a href="http://alexisvallet.github.io/">私のブログ</a>で私の研究を見えます。
+    アレクシと申します。フランスから来て、現在九州大学でコンピュータービジョンを研究しています。 <a href="https://github.com/alexisVallet">Github</a>と<a href="http://alexisvallet.github.io/">私のブログ</a>で私の研究を見えます。
     </p>
     <p>
-    現在会社と協力したいんです。私の研究に興味にあったら、<a href="mailto:alexis.vallet@gmail.com">メール</a>で連絡してください。
+    現在会社と協力したいと考えています。私の研究に興味があったら、<a href="mailto:alexis.vallet@gmail.com">メール</a>で連絡してください。
     </p>""",
     'acknowledgements_header': u"礼状",
     'acknowledgements_body': u"""<p>
-    九州大学と私の家族と坂本先生のおかげでこの研究を出来ました。
+    九州大学と私の家族と坂本先生のおかげでこの研究が出来ました。
     </p>
     <p>
     このアプリのイラストは全部クリエイティブ・コモンズ・ライセンスです。
