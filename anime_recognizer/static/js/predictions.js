@@ -33,7 +33,7 @@ $(function () {
 	    form_data.append('file', file_data);
 
 	    $.ajax({
-		url: '/identify_upload',
+		url: '/anime_recognizer/identify_upload',
 		type: 'post',
 		data: form_data,
 		processData: false,

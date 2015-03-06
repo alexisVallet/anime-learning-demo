@@ -101,6 +101,7 @@ def test_predict():
         'cc-nc-sa-3.0': "http://creativecommons.org/licenses/by-nc-sa/3.0/",
         'cc-nc-nd-3.0': "http://creativecommons.org/licenses/by-nc-nd/3.0/"
     }
+    image_root = 'anime_recognizer/static/images/test_set'
 
     for img_fname in img_fnames:
         image = imread(os.path.join(image_dir, img_fname))
@@ -109,7 +110,7 @@ def test_predict():
         with open(os.path.join(json_dir, base_name + '.json')) as json_file:
             image_info = json.load(json_file)
         predictions.append({
-            "image": os.path.join(image_dir, img_fname),
+            "image": os.path.join(image_root, img_fname),
             "predictions": identify(image),
             "illust_info": None if image_info is None else {
                 "title": image_info["title"],
@@ -138,14 +139,17 @@ def init_everything():
 
 init_everything()
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path="/anime_recognizer/static"
+)
 babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
     return request.accept_languages.best_match(['en', 'ja'])
 
-@app.route('/', methods=['GET'])
+@app.route('/anime_recognizer', methods=['GET'])
 def anime_recognizer():
     new_locale = request.args.get('locale', None)
     if new_locale is not None:
@@ -171,7 +175,7 @@ def anime_recognizer():
         **(messages_ja if session['locale'] == 'ja' else messages_en)
     )
 
-@app.route('/identify_upload', methods=['POST'])
+@app.route('/anime_recognizer/identify_upload', methods=['POST'])
 def identify_handler():
     if request.method == 'POST':
         # Get the uploaded image.

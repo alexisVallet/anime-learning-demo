@@ -100,18 +100,18 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!-- Handlebars for rendering thumbnails predictions -->
-    <script src="static/js/handlebars.runtime-v3.0.0.js"></script>
+    <script src="anime_recognizer/static/js/handlebars.runtime-v3.0.0.js"></script>
     <!-- Masonry for cascading grid layout of thumbnails -->
-    <script src="static/js/masonry.pkgd.min.js"></script>
+    <script src="anime_recognizer/static/js/masonry.pkgd.min.js"></script>
     <!-- waitForImages to deal with images using Masonry, even Ajax added ones -->
-    <script src="static/js/jquery.waitforimages.min.js"></script>
+    <script src="anime_recognizer/static/js/jquery.waitforimages.min.js"></script>
     <!-- Templates -->
-    <script src="static/js/templates.js"></script>
+    <script src="anime_recognizer/static/js/templates.js"></script>
     <!-- Predictions for test data (generated server-side) -->
     <script>
       var test_predictions = {{ test_predictions|tojson|safe }};
     </script>
     <!-- Code for predictions -->
-    <script src="static/js/predictions.js"></script>
+    <script src="anime_recognizer/static/js/predictions.js"></script>
   </body>
 </html>
