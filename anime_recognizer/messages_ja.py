@@ -9,7 +9,7 @@ messages_ja = {
     'language_select': u"言語",
     'jumbotron_title': u"アニメキャラクター認識",
     'jumbotron_body': u'このアプリで私の自動的アニメキャラクター認識研究を紹介します。現在、ディープラーニングを使って、高い制度で<a href="http://www.pixiv.net">ピクシブ</a>の<a href="#characters">一番人気な115人キャラクター</a>を認識出来ます。',
-    'try_it_now_header': u"認識させて見る?",
+    'try_it_now_header': u"認識させてみる?",
     'upload_label': u"自分の画像をアップロードする：",
     'recognize_button_load': u'認識中…',
     'recognize_button': u'認識する',
